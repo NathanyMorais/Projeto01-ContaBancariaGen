@@ -55,24 +55,41 @@ public class ContaController implements ContaRepository { //implementando a Inte
 	}
 
 	@Override
-	public void sacar(int numero, float valor) {
-		// TODO Auto-generated method stub
-		
+	public void sacar(int numero, float valor) { //numero: Número da conta que será efetuada a operação de Saque
+		var conta = buscarNaCollection(numero);  //valor: O valor que será debitado da conta
+		if(conta != null) {
+			if(conta.sacar(valor) == true)
+				System.out.println("\nO saque na Conta número "+numero+" foi efetuado com sucesso!");
+		}else
+	    	System.out.println("\nA Conta número: "+numero+" não foi encontrada!");
 	}
 
 	@Override
 	public void depositar(int numero, float valor) {
-		// TODO Auto-generated method stub
-		
+		var conta = buscarNaCollection(numero);
+		if(conta != null) {
+			conta.depositar(valor);
+			System.out.println("\nO Depósito na Conta número: "+numero+" foi efetuado com sucesso!");
+		}else
+	    	System.out.println("\nA Conta número: "+numero+" não foi encontrada ou a Conta destino não é uma Conta Corrente!");
 	}
 
 	@Override
-	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
-		// TODO Auto-generated method stub
+	public void transferir(int numeroOrigem, int numeroDestino, float valor) { //valor: O valor que será debitado da conta de origem e será creditado na conta de destino.
+		var contaOrigem = buscarNaCollection(numeroOrigem); //numeroOrigem: nº da conta que será efetuada a operação de Saque.
+		var contaDestino = buscarNaCollection(numeroDestino); //numeroDestino: nº da conta que será efetuada a operação de Depósito, ou seja, receberá a Transferência.
 		
+		if(contaOrigem != null && contaDestino != null) {
+			if(contaOrigem.sacar(valor) == true) {
+				contaDestino.depositar(valor);
+				System.out.println("\nA Transferência foi efetuada com sucesso!");
+			}
+			
+		}else
+			System.out.println("\nA Conta Origem e/ou Destino não foram encontradas!");
 	}
 	
-	//métodos auxiliares
+	//MÉTODOS AUXILIARES
 	
 	public int gerarNumero() { //método criado para retornar o número da conta todas as vezes que uma nova conta for cadastrada
 		return ++ numero;//a variável numero foi inicializada com zero e vai incrementando de 1 em 1, a cada nova conta que for criada
@@ -95,5 +112,4 @@ public class ContaController implements ContaRepository { //implementando a Inte
 		}
 		return 0;
 	}
-
 }

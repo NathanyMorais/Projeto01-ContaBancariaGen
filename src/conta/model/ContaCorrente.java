@@ -23,7 +23,6 @@ public class ContaCorrente extends Conta {
 			System.out.println("\nSaldo Insuficiente!");
 			return false;
 		}
-		
 		this.setSaldo(this.getSaldo() - valor);
 		return true;
 		
